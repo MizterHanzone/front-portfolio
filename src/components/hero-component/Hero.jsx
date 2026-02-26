@@ -1,3 +1,4 @@
+import { useRef, useState, useEffect } from 'react';
 import heroImage from '../../assets/Hero.jpg';
 
 const stats = [
@@ -6,8 +7,24 @@ const stats = [
 ];
 
 export default function Hero() {
+  const sectionRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="relative min-h-screen py-24 px-8 pb-16 flex flex-col max-w-[1280px] mx-auto">
+    <section ref={sectionRef} className="relative min-h-screen py-24 px-8 pb-16 flex flex-col max-w-[1280px] mx-auto">
       {/* Vertical left: 2024, tall line, Product designer (all vertical) */}
       <div className="absolute left-6 top-1/2 -translate-y-1/2 max-md:hidden flex flex-col items-center" aria-hidden>
         <div className="text-sm font-light text-secondary [writing-mode:vertical-rl] [letter-spacing:0.2em] -rotate-180">
@@ -21,7 +38,14 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div
+        className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-center section-fade-up"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(36px)',
+          transitionDelay: inView ? '0.1s' : '0ms',
+        }}
+      >
         <div className="max-w-[32rem] max-md:max-w-none max-md:text-center md:pl-[100px]">
           <div className="flex gap-12 mb-8 max-md:justify-center">
             {stats.map(({ value, label }) => (
@@ -39,7 +63,7 @@ export default function Hero() {
             Hello
           </h1>
           <p className="m-0 text-lg font-light text-secondary">
-            — It's Kheav Sokhan, Software Engineer
+            — I'm Kheav Sokhan, Software Engineer
           </p>
         </div>
 

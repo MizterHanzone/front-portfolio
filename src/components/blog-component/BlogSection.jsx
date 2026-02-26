@@ -1,3 +1,4 @@
+import { useRef, useState, useEffect } from 'react';
 import block1 from '../../assets/images/block-1.jpeg';
 import block2 from '../../assets/images/block-2.jpeg';
 import block3 from '../../assets/images/block-3.avif';
@@ -30,13 +31,37 @@ const BLOG_POSTS = [
 ];
 
 export default function BlogSection() {
+  const sectionRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="blog"
       className="relative py-16 md:py-24 px-6 md:px-8 bg-tertiary"
       aria-labelledby="blog-heading"
     >
-      <div className="max-w-[1280px] mx-auto">
+      <div
+        className="max-w-[1280px] mx-auto section-fade-up"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(36px)',
+          transitionDelay: inView ? '0.1s' : '0ms',
+        }}
+      >
         {/* Header */}
         <header className="mb-12 md:mb-16 text-center">
           <p className="text-sm font-normal text-primary/70 tracking-wide mb-2 font-sans">

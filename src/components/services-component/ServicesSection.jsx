@@ -1,3 +1,5 @@
+import { useRef, useState, useEffect } from 'react';
+
 const SERVICES = [
   {
     title: 'UI/UX Design',
@@ -67,13 +69,37 @@ function ServiceIcon({ name }) {
 }
 
 export default function ServicesSection() {
+  const sectionRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="relative py-16 md:py-24 px-6 md:px-8 bg-tertiary"
       aria-labelledby="services-heading"
     >
-      <div className="max-w-[1280px] mx-auto">
+      <div
+        className="max-w-[1280px] mx-auto section-fade-up"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(36px)',
+          transitionDelay: inView ? '0.1s' : '0ms',
+        }}
+      >
         {/* Header */}
         <header className="mb-12 md:mb-16 text-center">
           <p className="text-sm font-normal text-primary/70 tracking-wide mb-2 font-sans">

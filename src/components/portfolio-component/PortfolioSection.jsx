@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import slideDownload from '../../assets/images/slide-about/download.jpeg';
 import slideGoldenCream from '../../assets/images/slide-about/golden-cream-yy-f1e0bc.webp';
 import slideNN9036 from '../../assets/images/slide-about/NN-9036.webp';
@@ -26,7 +26,22 @@ const PORTFOLIO_ITEMS = [
 ];
 
 export default function PortfolioSection() {
+  const sectionRef = useRef(null);
+  const [inView, setInView] = useState(true);
   const [activeFilter, setActiveFilter] = useState('All');
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0, rootMargin: '50px 0px 50px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const filteredItems =
     activeFilter === 'All'
@@ -35,6 +50,7 @@ export default function PortfolioSection() {
 
   return (
     <section
+      ref={sectionRef}
       id="portfolio"
       className="relative -mt-[50px] pt-4 md:pt-6 pb-16 md:pb-24 px-6 md:px-8 bg-tertiary overflow-hidden"
       aria-labelledby="portfolio-heading"
@@ -47,7 +63,14 @@ export default function PortfolioSection() {
           background: 'linear-gradient(to left, rgba(196, 220, 200, 0.15), rgba(220, 200, 220, 0.08))',
         }}
       />
-      <div className="relative max-w-[1280px] mx-auto">
+      <div
+        className="relative max-w-[1280px] mx-auto section-fade-up"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(24px)',
+          transitionDelay: inView ? '0.1s' : '0ms',
+        }}
+      >
         {/* Header */}
         <header className="text-center mb-10 md:mb-14">
           <p className="text-sm font-normal text-primary/70 tracking-wide mb-2 font-sans">

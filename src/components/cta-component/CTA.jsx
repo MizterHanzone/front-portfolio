@@ -1,10 +1,36 @@
+import { useRef, useState, useEffect } from 'react';
+
 export default function CTA() {
+  const sectionRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setInView(true);
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       className="bg-tertiary py-16 md:py-20 px-6 md:px-8 text-center"
       aria-labelledby="cta-heading"
     >
-      <div className="max-w-[640px] mx-auto">
+      <div
+        className="max-w-[640px] mx-auto section-fade-up"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(36px)',
+          transitionDelay: inView ? '0.1s' : '0ms',
+        }}
+      >
         <h2
           id="cta-heading"
           className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary tracking-tight mb-4 font-sans"

@@ -6,6 +6,8 @@ const footerNavLinks = [
   { label: 'Blog', href: '#blog', active: false },
 ];
 
+import { Link } from 'react-router-dom';
+
 const email = 'hello@dnova.com';
 
 export default function Footer() {
@@ -45,12 +47,25 @@ export default function Footer() {
             );
           })}
         </nav>
-        <a
-          href={`mailto:${email}`}
-          className="text-xl md:text-2xl font-light tracking-tight text-white hover:opacity-90 transition-opacity text-right shrink-0 font-sans"
-        >
-          {email}
-        </a>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
+          <Link
+            to="/cv"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border border-white/40 text-white text-sm font-medium hover:bg-white/10 hover:border-white/60 transition-colors shrink-0"
+          >
+            View CV
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <path d="M15 3h6v6" />
+              <path d="M10 14L21 3" />
+            </svg>
+          </Link>
+          <a
+            href={`mailto:${email}`}
+            className="text-xl md:text-2xl font-light tracking-tight text-white hover:opacity-90 transition-opacity shrink-0 font-sans"
+          >
+            {email}
+          </a>
+        </div>
       </div>
     </footer>
   );

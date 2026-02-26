@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import BottomSheet from '../ui/BottomSheet';
 import about1 from '../../assets/images/about-1.jpeg';
 import about2 from '../../assets/images/about-2.jpeg';
 import curveArrow from '../../assets/icons/curve-right-arrow.png';
@@ -21,12 +22,12 @@ const highlights = [
 ];
 
 const projectCards = [
-  { title: 'Website For Squeeze', image: slideDownload, href: '#portfolio' },
-  { title: 'Halo Digital Agency website For Squeeze', image: slideGoldenCream, href: '#portfolio' },
-  { title: 'Digital Agency website', image: slideNN9036, href: '#portfolio' },
-  { title: 'Product Design For Brand', image: slideNN9133, href: '#portfolio' },
-  { title: 'Brand & Visual Identity', image: slideNN9218, href: '#portfolio' },
-  { title: 'Creative Direction', image: slideWW0100, href: '#portfolio' },
+  { title: 'Website For Squeeze', image: slideDownload, href: '#portfolio', description: 'A tailored website solution for Squeeze, focusing on clean layout and clear user journeys to support their brand and conversion goals.' },
+  { title: 'Halo Digital Agency website For Squeeze', image: slideGoldenCream, href: '#portfolio', description: 'Full design and creative direction for Halo Digital Agency’s site, showcasing their work and services with a modern, professional look.' },
+  { title: 'Digital Agency website', image: slideNN9036, href: '#portfolio', description: 'Design and structure for a digital agency presence, emphasizing portfolio presentation and client-focused messaging.' },
+  { title: 'Product Design For Brand', image: slideNN9133, href: '#portfolio', description: 'End-to-end product design for a brand refresh, from concept and wireframes to high-fidelity UI and design system.' },
+  { title: 'Brand & Visual Identity', image: slideNN9218, href: '#portfolio', description: 'Brand and visual identity work including logo, color system, typography, and key touchpoints for consistent storytelling.' },
+  { title: 'Creative Direction', image: slideWW0100, href: '#portfolio', description: 'Creative direction and art direction for campaigns and digital products, aligning vision with execution and brand goals.' },
 ];
 
 const experiencesIntro =
@@ -77,6 +78,7 @@ export default function AboutSection() {
   const sectionRef = useRef(null);
   const [inView, setInView] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState(null);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -218,9 +220,16 @@ export default function AboutSection() {
         </div>
       </div>
 
+      {/* Skills heading (above scroll) – style like Services/Portfolio */}
+      <header className="mt-16 md:mt-20 mb-10 md:mb-14 text-center">
+        <p className="text-sm font-normal text-primary/70 tracking-wide font-sans">
+          • Skills
+        </p>
+      </header>
+
       {/* Horizontal scroll: project cards – full width */}
       <div
-        className="scrollbar-hide mt-16 md:mt-20 -mx-6 md:-mx-8 overflow-x-auto overflow-y-hidden scroll-smooth pb-2 about-fade-up"
+        className="scrollbar-hide -mx-6 md:-mx-8 overflow-x-auto overflow-y-hidden scroll-smooth pb-2 about-fade-up"
         style={{
           opacity: inView ? 1 : 0,
           transform: inView ? 'translateY(0)' : 'translateY(36px)',
@@ -229,10 +238,11 @@ export default function AboutSection() {
       >
         <div className="flex gap-6 snap-x snap-mandatory min-w-min px-6 md:px-8">
           {projectCards.map((card, i) => (
-            <a
+            <button
               key={i}
-              href={card.href}
-              className="flex-shrink-0 w-[280px] md:w-[320px] snap-center group"
+              type="button"
+              onClick={() => setSelectedCard(card)}
+              className="flex-shrink-0 w-[280px] md:w-[320px] snap-center group text-left"
             >
               <div className="rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-[0_4px_20px_rgba(34,34,34,0.06)]">
                 <div className="relative aspect-[16/10] bg-gray-100">
@@ -241,7 +251,7 @@ export default function AboutSection() {
                     alt=""
                     className="w-full h-full object-cover"
                   />
-                  <span className="absolute inset-0 flex items-center justify-center" aria-hidden>
+                  <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden>
                     <span className="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -260,9 +270,39 @@ export default function AboutSection() {
                   </svg>
                 </div>
               </div>
-            </a>
+            </button>
           ))}
         </div>
+
+        <BottomSheet
+          open={!!selectedCard}
+          onClose={() => setSelectedCard(null)}
+          title={selectedCard?.title ?? ''}
+        >
+          {selectedCard && (
+            <div className="space-y-6">
+              <div className="relative aspect-video rounded-xl overflow-hidden bg-gray-100">
+                <img
+                  src={selectedCard.image}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <p className="text-primary/80 leading-relaxed">
+                {selectedCard.description}
+              </p>
+              <a
+                href={selectedCard.href}
+                className="inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 hover:text-secondary transition-colors"
+              >
+                View project
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M7 17L17 7M17 7h-10M17 7v10" />
+                </svg>
+              </a>
+            </div>
+          )}
+        </BottomSheet>
       </div>
 
       {/* Experiences block – white background */}
