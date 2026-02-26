@@ -148,3 +148,23 @@
   .top-nav { display: none !important; }
   .bottom-nav { display: flex !important; }
 }
+
+/* Hide scrollbar while keeping scroll (horizontal card strip) */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* About section: smooth fade-in from bottom when in view */
+.about-fade-up {
+  transition:
+    opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, transform;
+}
+.about-fade-up[style*="opacity: 1"] {
+  will-change: auto;
+}

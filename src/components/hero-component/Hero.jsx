@@ -11,13 +11,13 @@ export default function Hero() {
       {/* Vertical left: 2024, tall line, Product designer (all vertical) */}
       <div className="absolute left-6 top-1/2 -translate-y-1/2 max-md:hidden flex flex-col items-center" aria-hidden>
         <div className="text-sm font-light text-secondary [writing-mode:vertical-rl] [letter-spacing:0.2em] -rotate-180">
-          2024
+          2025
         </div>
 
         <div className="h-40 w-px bg-secondary/30 my-4" />
 
         <div className="text-sm font-light text-secondary [writing-mode:vertical-rl] [letter-spacing:0.2em] -rotate-180">
-          Product designer
+          Software Engineer
         </div>
       </div>
 
@@ -39,7 +39,7 @@ export default function Hero() {
             Hello
           </h1>
           <p className="m-0 text-lg font-light text-secondary">
-            — It's D.Nows a design wizard
+            — It's Kheav Sokhan, Software Engineer
           </p>
         </div>
 
