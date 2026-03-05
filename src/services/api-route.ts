@@ -19,9 +19,21 @@ export const profileRoutes = {
   profile: "/api/profile",
 } as const;
 
+/** About Me endpoints */
+export const aboutMeRoutes = {
+  aboutMe: "/api/about-me",
+} as const;
+
+/** Banner endpoints */
+export const bannerRoutes = {
+  banner: "/api/banner",
+} as const;
+
 /** All API routes grouped together */
 export const apiRoutes = {
   profile: profileRoutes,
+  aboutMe: aboutMeRoutes,
+  banner: bannerRoutes,
 } as const;
 
 export default apiRoutes;

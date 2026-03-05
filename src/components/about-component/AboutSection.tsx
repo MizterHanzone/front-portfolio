@@ -3,6 +3,8 @@ import BottomSheet from '../ui/BottomSheet';
 import about1 from '../../assets/images/about-1.jpeg';
 import about2 from '../../assets/images/about-2.jpeg';
 import curveArrow from '../../assets/icons/curve-right-arrow.png';
+import { getAboutMe } from '../../services/about-me/about-me.service';
+import { getBanner } from '../../services/banner/banner.service';
 import slideDownload from '../../assets/images/slide-about/download.jpeg';
 import slideGoldenCream from '../../assets/images/slide-about/golden-cream-yy-f1e0bc.webp';
 import slideNN9036 from '../../assets/images/slide-about/NN-9036.webp';
@@ -11,15 +13,18 @@ import slideNN9218 from '../../assets/images/slide-about/NN-9218.webp';
 import slideWW0100 from '../../assets/images/slide-about/WW-0100-1.webp';
 import portoImage from '../../assets/images/porto.jpg';
 
-const stat = {
+const statDefault = {
   value: '120%',
   description: 'Average increase in client engagement in the first 6 months',
 };
 
-const highlights = [
+const highlightsDefault = [
   'With 4+ years of experience, I specialize in creating intuitive, user-focused designs that solve real-world problems and deliver seamless digital experiences.',
   'I thrive on working closely with clients, blending creativity with strategy to bring their vision to life through thoughtful, impactful design solutions.',
 ];
+
+const introDefault =
+  'I specialize in turning complex problems into elegant solutions. My approach blends creativity with strategic thinking to deliver designs that not only look great but work seamlessly. Ready to start your next project?';
 
 interface ProjectCard {
   title: string;
@@ -99,6 +104,58 @@ export default function AboutSection() {
   const [inView, setInView] = useState(false);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [selectedCard, setSelectedCard] = useState<ProjectCard | null>(null);
+  const [aboutMe, setAboutMe] = useState<{
+    statDescription: string;
+    intro: string;
+    highlights: string[];
+    statImage: string;
+    portraitImage: string;
+  } | null>(null);
+  const [banner, setBanner] = useState<{
+    title: string;
+    subtitle: string;
+    description: string;
+    image: string;
+  } | null>(null);
+
+  useEffect(() => {
+    getAboutMe().then((data) => {
+      if (data) {
+        setAboutMe({
+          statDescription: data.title,
+          intro: data.description,
+          highlights: data.subdescription ?? [],
+          statImage: data.image,
+          portraitImage: data.thumbnail,
+        });
+      }
+    });
+    getBanner().then((data) => {
+      if (data) {
+        setBanner({
+          title: data.title,
+          subtitle: data.subtitle,
+          description: data.description,
+          image: data.image,
+        });
+      }
+    });
+  }, []);
+
+  const stat = {
+    value: statDefault.value,
+    description: aboutMe?.statDescription ?? statDefault.description,
+  };
+  const highlights = aboutMe?.highlights?.length ? aboutMe.highlights : highlightsDefault;
+  const intro = aboutMe?.intro ?? introDefault;
+  const statImageSrc = aboutMe?.statImage ?? about1;
+  const portraitImageSrc = aboutMe?.portraitImage ?? about2;
+  const bannerImageSrc = banner?.image ?? portoImage;
+  const bannerTitle = banner?.title ?? "Let's Bring Your Vision to Life. Get a Free Consultation!";
+  const bannerSubtitle = banner?.subtitle ?? '(Book Your Free Consultation Now!)';
+  const bannerDescription =
+    banner?.description ??
+    "Take advantage of this offer to discuss your design needs with an experienced UI/UX and product designer.";
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -124,33 +181,36 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-start">
           {/* Left: heading + intro */}
           <div
-            className="lg:col-span-4 relative about-fade-up"
+            className="lg:col-span-4 relative about-fade-up overflow-visible"
             style={{
               opacity: inView ? 1 : 0,
               transform: inView ? 'translateY(0)' : 'translateY(36px)',
               transitionDelay: inView ? '0.1s' : '0ms',
             }}
           >
-            <h2
-              id="about-heading"
-              className="text-3xl md:text-4xl font-bold text-primary tracking-tight mb-6"
-            >
-              About Me
-            </h2>
-            <p className="text-base md:text-lg font-light text-primary/90 leading-relaxed max-w-md">
-              I specialize in turning complex problems into elegant solutions. My approach blends
-              creativity with strategic thinking to deliver designs that not only look great but
-              work seamlessly. Ready to start your next project?
-            </p>
-            {/* Blurred gray curved arrow pointing toward the 120% card */}
-            <div className="mt-6 flex justify-start overflow-visible">
-              <img
-                src={curveArrow}
-                alt=""
-                className="w-40 md:w-52 h-auto opacity-70 max-md:max-w-[10rem] translate-x-2 md:translate-x-6"
-                style={{ filter: 'grayscale(1) blur(6px)' }}
-                aria-hidden
-              />
+            {/* Curved arrow as background for text */}
+            <div
+              className="absolute -inset-4 md:inset-0 pointer-events-none"
+              aria-hidden
+              style={{
+                backgroundImage: `url(${curveArrow})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'left 0 bottom 0',
+                backgroundSize: 'min(18rem, 50vw) auto',
+                filter: 'grayscale(1) blur(6px)',
+                opacity: 0.5,
+              }}
+            />
+            <div className="relative z-10">
+              <h2
+                id="about-heading"
+                className="text-3xl md:text-4xl font-bold text-primary tracking-tight mb-6"
+              >
+                About Me
+              </h2>
+              <p className="text-base md:text-lg font-light text-primary/90 leading-relaxed max-w-md">
+                {intro}
+              </p>
             </div>
           </div>
 
@@ -195,7 +255,7 @@ export default function AboutSection() {
               </article>
               <div className="px-4 pb-6 pt-1 md:px-5 md:pb-8 md:pt-2 bg-white flex items-center justify-center min-h-[260px]">
                 <img
-                  src={about1}
+                  src={statImageSrc}
                   alt=""
                   className="max-w-full max-h-[280px] md:max-h-[300px] w-auto h-auto object-contain object-center grayscale rounded-xl block mx-auto"
                 />
@@ -214,7 +274,7 @@ export default function AboutSection() {
           >
             <div className="rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(34,34,34,0.06)] border border-gray-100/80 w-full max-w-[280px] mx-auto lg:mx-0 aspect-square bg-white">
               <img
-                src={about2}
+                src={portraitImageSrc}
                 alt=""
                 className="w-full h-full object-cover object-top grayscale"
               />
@@ -439,12 +499,12 @@ export default function AboutSection() {
             })}
           </ul>
 
-          {/* About banner: porto.jpg with overlay text and CTA (under collapsible section) */}
+          {/* About banner: fetched image with overlay text and CTA (under collapsible section) */}
           <div className="mt-12 md:mt-16">
             <div className="relative rounded-2xl overflow-hidden min-h-[320px] md:min-h-[380px] flex items-center">
               <div
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: `url(${portoImage})` }}
+                style={{ backgroundImage: `url(${bannerImageSrc})` }}
                 aria-hidden
               />
               <div
@@ -453,13 +513,13 @@ export default function AboutSection() {
               />
               <div className="relative z-10 w-full max-w-xl py-12 md:py-16 px-8 md:px-12">
                 <p className="text-sm text-white/70 mb-3 font-sans">
-                  (Book Your Free Consultation Now!)
+                  {bannerSubtitle}
                 </p>
                 <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight mb-4 font-sans">
-                  Let's Bring Your Vision to Life. Get a Free Consultation!
+                  {bannerTitle}
                 </h3>
                 <p className="text-base md:text-lg text-white/90 leading-relaxed mb-8 font-sans">
-                  Take advantage of this offer to discuss your design needs with an experienced UI/UX and product designer.
+                  {bannerDescription}
                 </p>
                 <a
                   href="#contact"
