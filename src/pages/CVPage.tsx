@@ -6,6 +6,87 @@ const bgBeige = '#EAE7D8';
 const archBlue = '#A8DADC';
 const textDark = '#333333';
 
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section>
+      <h2 className="text-xs font-bold uppercase tracking-wider text-primary mb-4">{title}</h2>
+      <div className="space-y-5">{children}</div>
+    </section>
+  );
+}
+
+function Entry({ year, title, sub, desc }: { year: string; title: string; sub: string; desc: string }) {
+  return (
+    <div>
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gray-200/80 text-xs font-medium text-primary mb-2">
+        <span>{year}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </div>
+      <h3 className="font-bold text-primary text-sm">{title}</h3>
+      <p className="text-xs text-primary/70 mb-1">{sub}</p>
+      <p className="text-xs text-primary/80 leading-relaxed">{desc}</p>
+    </div>
+  );
+}
+
+function RatingItem({ label, filled, total = 5, accent: accentColor }: { label: string; filled: number; total?: number; accent: string }) {
+  return (
+    <div className="flex items-center justify-between gap-2 py-0.5">
+      <span className="text-sm text-primary">{label}</span>
+      <div className="flex gap-0.5">
+        {Array.from({ length: total }).map((_, i) => (
+          <span
+            key={i}
+            className="w-2 h-2 rounded-full shrink-0"
+            style={{
+              backgroundColor: i < filled ? '#222' : accentColor,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RefItem({ name, company, position, contact }: { name: string; company: string; position: string; contact: string }) {
+  return (
+    <div className="text-xs text-primary/85 space-y-0.5">
+      <p className="font-bold text-primary">{name}</p>
+      <p>{company}</p>
+      <p>{position}</p>
+      <p className="text-primary/70">{contact}</p>
+    </div>
+  );
+}
+
+function PhoneIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 ${className}`}>
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  );
+}
+
+function EmailIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 ${className}`}>
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+      <path d="m22 6-10 7L2 6" />
+    </svg>
+  );
+}
+
+function AddressIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 ${className}`}>
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
 export default function CVPage() {
   return (
     <div
@@ -207,86 +288,5 @@ export default function CVPage() {
         </div>
       </div>
     </div>
-  );
-}
-
-function Section({ title, children }) {
-  return (
-    <section>
-      <h2 className="text-xs font-bold uppercase tracking-wider text-primary mb-4">{title}</h2>
-      <div className="space-y-5">{children}</div>
-    </section>
-  );
-}
-
-function Entry({ year, title, sub, desc }) {
-  return (
-    <div>
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-gray-200/80 text-xs font-medium text-primary mb-2">
-        <span>{year}</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
-      </div>
-      <h3 className="font-bold text-primary text-sm">{title}</h3>
-      <p className="text-xs text-primary/70 mb-1">{sub}</p>
-      <p className="text-xs text-primary/80 leading-relaxed">{desc}</p>
-    </div>
-  );
-}
-
-function RatingItem({ label, filled, total = 5, accent }) {
-  return (
-    <div className="flex items-center justify-between gap-2 py-0.5">
-      <span className="text-sm text-primary">{label}</span>
-      <div className="flex gap-0.5">
-        {Array.from({ length: total }).map((_, i) => (
-          <span
-            key={i}
-            className="w-2 h-2 rounded-full shrink-0"
-            style={{
-              backgroundColor: i < filled ? '#222' : accent,
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function RefItem({ name, company, position, contact }) {
-  return (
-    <div className="text-xs text-primary/85 space-y-0.5">
-      <p className="font-bold text-primary">{name}</p>
-      <p>{company}</p>
-      <p>{position}</p>
-      <p className="text-primary/70">{contact}</p>
-    </div>
-  );
-}
-
-function PhoneIcon({ className = '' }) {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 ${className}`}>
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  );
-}
-
-function EmailIcon({ className = '' }) {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 ${className}`}>
-      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-      <path d="m22 6-10 7L2 6" />
-    </svg>
-  );
-}
-
-function AddressIcon({ className = '' }) {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 ${className}`}>
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
   );
 }

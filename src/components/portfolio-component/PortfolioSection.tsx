@@ -16,7 +16,17 @@ const FILTERS = [
   'Others',
 ];
 
-const PORTFOLIO_ITEMS = [
+interface PortfolioItem {
+  id: number;
+  image: string;
+  category: string;
+  title: string | null;
+  subtitle: string | null;
+  href: string;
+  featured: boolean;
+}
+
+const PORTFOLIO_ITEMS: PortfolioItem[] = [
   { id: 1, image: slideDownload, category: 'Brand Identity', title: null, subtitle: null, href: '#', featured: false },
   { id: 2, image: slideGoldenCream, category: 'Webflow Development', title: 'Website', subtitle: 'halodigital.xyz', href: '#', featured: true },
   { id: 3, image: slideNN9036, category: 'Brand Identity', title: null, subtitle: null, href: '#', featured: false },
@@ -26,7 +36,7 @@ const PORTFOLIO_ITEMS = [
 ];
 
 export default function PortfolioSection() {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(true);
   const [activeFilter, setActiveFilter] = useState('All');
 

@@ -11,8 +11,8 @@ const navLinks = [
   { id: 'blog', label: 'Blog', href: '#blog' },
 ];
 
-function Icon({ name }) {
-  const size = 18
+function Icon({ name }: { name: string }) {
+  const size = 18;
   switch (name) {
     case 'About Me':
       return (

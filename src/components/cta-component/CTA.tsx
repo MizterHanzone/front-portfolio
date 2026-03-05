@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 
 export default function CTA() {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {

@@ -3,7 +3,16 @@ import block1 from '../../assets/images/block-1.jpeg';
 import block2 from '../../assets/images/block-2.jpeg';
 import block3 from '../../assets/images/block-3.avif';
 
-const BLOG_POSTS = [
+interface BlogPost {
+  id: number;
+  image: string;
+  category: string;
+  readTime: string;
+  title: string;
+  href: string;
+}
+
+const BLOG_POSTS: BlogPost[] = [
   {
     id: 1,
     image: block1,
@@ -31,7 +40,7 @@ const BLOG_POSTS = [
 ];
 
 export default function BlogSection() {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {

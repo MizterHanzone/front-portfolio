@@ -21,9 +21,16 @@ const highlights = [
   'I thrive on working closely with clients, blending creativity with strategy to bring their vision to life through thoughtful, impactful design solutions.',
 ];
 
-const projectCards = [
+interface ProjectCard {
+  title: string;
+  image: string;
+  href: string;
+  description: string;
+}
+
+const projectCards: ProjectCard[] = [
   { title: 'Website For Squeeze', image: slideDownload, href: '#portfolio', description: 'A tailored website solution for Squeeze, focusing on clean layout and clear user journeys to support their brand and conversion goals.' },
-  { title: 'Halo Digital Agency website For Squeeze', image: slideGoldenCream, href: '#portfolio', description: 'Full design and creative direction for Halo Digital Agency’s site, showcasing their work and services with a modern, professional look.' },
+  { title: 'Halo Digital Agency website For Squeeze', image: slideGoldenCream, href: '#portfolio', description: "Full design and creative direction for Halo Digital Agency's site, showcasing their work and services with a modern, professional look." },
   { title: 'Digital Agency website', image: slideNN9036, href: '#portfolio', description: 'Design and structure for a digital agency presence, emphasizing portfolio presentation and client-focused messaging.' },
   { title: 'Product Design For Brand', image: slideNN9133, href: '#portfolio', description: 'End-to-end product design for a brand refresh, from concept and wireframes to high-fidelity UI and design system.' },
   { title: 'Brand & Visual Identity', image: slideNN9218, href: '#portfolio', description: 'Brand and visual identity work including logo, color system, typography, and key touchpoints for consistent storytelling.' },
@@ -31,11 +38,24 @@ const projectCards = [
 ];
 
 const experiencesIntro =
-  'Over the past 4+ years, I\'ve had the privilege of working with diverse teams and brands to create meaningful digital experiences. From product design to branding, each project has shaped my approach to solving problems with empathy and clarity.';
+  "Over the past 4+ years, I've had the privilege of working with diverse teams and brands to create meaningful digital experiences. From product design to branding, each project has shaped my approach to solving problems with empathy and clarity.";
 
 const experienceThumbnails = [slideDownload, slideGoldenCream, slideNN9036];
 
-const experiences = [
+interface Experience {
+  company: string;
+  location: string;
+  dates: string;
+  role: string;
+  description: string;
+  tags: string[];
+  highlighted: boolean;
+  expandDescription: string;
+  thumbnails: string[];
+  href: string;
+}
+
+const experiences: Experience[] = [
   {
     company: 'Creative Minds',
     location: 'New York, USA',
@@ -75,10 +95,10 @@ const experiences = [
 ];
 
 export default function AboutSection() {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
-  const [expandedIndex, setExpandedIndex] = useState(null);
-  const [selectedCard, setSelectedCard] = useState(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [selectedCard, setSelectedCard] = useState<ProjectCard | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;

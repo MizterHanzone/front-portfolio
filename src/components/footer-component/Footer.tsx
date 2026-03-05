@@ -1,3 +1,7 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { getProfile } from '../../services/profile/profile.service';
+
 const footerNavLinks = [
   { label: 'Home', href: '#', active: true },
   { label: 'About Me', href: '#about', active: false },
@@ -6,11 +10,19 @@ const footerNavLinks = [
   { label: 'Blog', href: '#blog', active: false },
 ];
 
-import { Link } from 'react-router-dom';
-
-const email = 'hello@dnova.com';
+const defaultEmail = 'hello@dnova.com';
 
 export default function Footer() {
+  const [email, setEmail] = useState(defaultEmail);
+
+  useEffect(() => {
+    getProfile()
+      .then((profile) => {
+        if (profile?.email) setEmail(profile.email);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <footer
       className="relative w-full bg-primary text-white overflow-hidden font-sans"

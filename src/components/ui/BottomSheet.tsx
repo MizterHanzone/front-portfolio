@@ -1,7 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-export default function BottomSheet({ open, onClose, title, children }) {
+interface BottomSheetProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+}
+
+export default function BottomSheet({ open, onClose, title, children }: BottomSheetProps) {
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden';
@@ -14,7 +21,7 @@ export default function BottomSheet({ open, onClose, title, children }) {
   }, [open]);
 
   useEffect(() => {
-    const onEscape = (e) => {
+    const onEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
     if (open) {

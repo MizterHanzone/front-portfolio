@@ -1,6 +1,12 @@
 import { useRef, useState, useEffect } from 'react';
 
-const SERVICES = [
+interface Service {
+  title: string;
+  description: string;
+  icon: 'ui' | 'research' | 'product' | 'consultation';
+}
+
+const SERVICES: Service[] = [
   {
     title: 'UI/UX Design',
     description:
@@ -27,7 +33,7 @@ const SERVICES = [
   },
 ];
 
-function ServiceIcon({ name }) {
+function ServiceIcon({ name }: { name: string }) {
   const size = 24;
   const className = 'stroke-current';
   switch (name) {
@@ -69,7 +75,7 @@ function ServiceIcon({ name }) {
 }
 
 export default function ServicesSection() {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
@@ -109,10 +115,10 @@ export default function ServicesSection() {
             id="services-heading"
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary tracking-tight mb-6 font-sans"
           >
-            Design Services Tailored to Your Needs
+            Applications Software to Your Needs
           </h2>
           <p className="text-base md:text-lg font-normal text-primary/80 leading-relaxed max-w-3xl mx-auto font-sans">
-            Explore a range of tailored UI/UX and product design services designed to meet your unique
+              Explore a range of tailored applications software to meet your unique
             needs and goals. From initial research and strategy to wireframing, prototyping, and
             final delivery.
           </p>

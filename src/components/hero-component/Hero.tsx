@@ -1,14 +1,26 @@
 import { useRef, useState, useEffect } from 'react';
-import heroImage from '../../assets/Hero.jpg';
+import heroImage from '../../assets/images/about-1.jpeg';
+import { getProfile, type Profile } from '../../services/profile/profile.service';
 
 const stats = [
   { value: '+200', label: 'Project completed' },
   { value: '+50', label: 'Startup raised' },
 ];
 
+const defaultName = 'Kheav Sokhan';
+const defaultRole = 'Software Engineer';
+const defaultYear = '2025';
+
+function yearFromDate(dateStr: string | undefined): string {
+  if (!dateStr) return defaultYear;
+  const year = dateStr.split('-')[0];
+  return year || defaultYear;
+}
+
 export default function Hero() {
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
+  const [profile, setProfile] = useState<Profile | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -23,18 +35,24 @@ export default function Hero() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    getProfile()
+      .then((data) => setProfile(data))
+      .catch(() => setProfile(null));
+  }, []);
+
   return (
     <section ref={sectionRef} className="relative min-h-screen py-24 px-8 pb-16 flex flex-col max-w-[1280px] mx-auto">
-      {/* Vertical left: 2024, tall line, Product designer (all vertical) */}
+      {/* Vertical left: year, tall line, role (all vertical) */}
       <div className="absolute left-6 top-1/2 -translate-y-1/2 max-md:hidden flex flex-col items-center" aria-hidden>
         <div className="text-sm font-light text-secondary [writing-mode:vertical-rl] [letter-spacing:0.2em] -rotate-180">
-          2025
+          {profile ? yearFromDate(profile.start_date) : defaultYear}
         </div>
 
         <div className="h-40 w-px bg-secondary/30 my-4" />
 
         <div className="text-sm font-light text-secondary [writing-mode:vertical-rl] [letter-spacing:0.2em] -rotate-180">
-          Software Engineer
+          {profile?.description || defaultRole}
         </div>
       </div>
 
@@ -63,14 +81,15 @@ export default function Hero() {
             Hello
           </h1>
           <p className="m-0 text-lg font-light text-secondary">
-            — I'm Kheav Sokhan, Software Engineer
+            — I'm {profile ? `${profile.first_name} ${profile.last_name}` : defaultName}, {profile?.description || defaultRole}
           </p>
         </div>
 
         <div className="relative aspect-[3/4] max-h-[min(75vh,32rem)] md:justify-self-end max-md:mx-auto max-md:max-h-[50vh] overflow-hidden bg-secondary">
           <img
-            src={heroImage}
-            alt="D.Nows"
+            key={profile?.photo || 'default'}
+            src={profile?.photo || heroImage}
+            alt={profile ? `${profile.first_name} ${profile.last_name}` : 'Portrait'}
             className="w-full h-full object-cover grayscale"
           />
           {/* Gradient overlay */}
@@ -104,4 +123,3 @@ export default function Hero() {
     </section>
   );
 }
-
