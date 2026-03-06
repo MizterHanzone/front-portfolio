@@ -29,11 +29,17 @@ export const bannerRoutes = {
   banner: "/api/banner",
 } as const;
 
+/** Skills endpoints */
+export const skillRoutes = {
+  skills: "/api/skills",
+} as const;
+
 /** All API routes grouped together */
 export const apiRoutes = {
   profile: profileRoutes,
   aboutMe: aboutMeRoutes,
   banner: bannerRoutes,
+  skill: skillRoutes,
 } as const;
 
 export default apiRoutes;
