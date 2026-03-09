@@ -6,10 +6,12 @@ import { VitePWA } from 'vite-plugin-pwa'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
+    // Bind to all network interfaces so the server is reachable on the LAN
+    host: true,
+    // Use port 8080 to match the requested startup output
+    port: 8080,
     hmr: {
-      clientPort: 5173,
       protocol: 'ws',
-      host: 'localhost',
     },
   },
   plugins: [

@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CVPage from './pages/CVPage';
 import CoverLetterPage from './pages/CoverLetterPage';
+import BlogPostPage from './pages/BlogPostPage';
 import { InstallPrompt } from './components/InstallPrompt';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/cv" element={<CVPage />} />
         <Route path="/cover-letter" element={<CoverLetterPage />} />
       </Routes>

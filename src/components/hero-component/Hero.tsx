@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
 import heroImage from '../../assets/images/about-1.jpeg';
 import { getProfile, type Profile } from '../../services/profile/profile.service';
+import { getProjectSummary, type ProjectSummary } from '../../services/portfolio/portfolio.service';
 
-const stats = [
+const defaultStats = [
   { value: '+200', label: 'Project completed' },
   { value: '+50', label: 'Startup raised' },
 ];
@@ -17,10 +18,19 @@ function yearFromDate(dateStr: string | undefined): string {
   return year || defaultYear;
 }
 
+function statsFromSummary(summary: ProjectSummary | null) {
+  if (!summary) return defaultStats;
+  return [
+    { value: `+${summary.completed}`, label: 'Project completed' },
+    { value: `+${summary.in_progress}`, label: 'Startup raised' },
+  ];
+}
+
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [projectSummary, setProjectSummary] = useState<ProjectSummary | null>(null);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -39,6 +49,12 @@ export default function Hero() {
     getProfile()
       .then((data) => setProfile(data))
       .catch(() => setProfile(null));
+  }, []);
+
+  useEffect(() => {
+    getProjectSummary()
+      .then((data) => setProjectSummary(data))
+      .catch(() => setProjectSummary(null));
   }, []);
 
   return (
@@ -66,7 +82,7 @@ export default function Hero() {
       >
         <div className="max-w-[32rem] max-md:max-w-none max-md:text-center md:pl-[100px]">
           <div className="flex gap-12 mb-8 max-md:justify-center">
-            {stats.map(({ value, label }) => (
+            {statsFromSummary(projectSummary).map(({ value, label }) => (
               <div key={label} className="flex flex-col gap-1">
                 <span className="text-2xl font-semibold text-primary tracking-tight">
                   {value}

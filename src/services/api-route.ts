@@ -34,12 +34,41 @@ export const skillRoutes = {
   skills: "/api/skills",
 } as const;
 
+/** Explore Journey endpoints */
+export const exploreJourneyRoutes = {
+  exploreJourneys: "/api/explore-journeys",
+} as const;
+
+/** Experience endpoints */
+export const experienceRoutes = {
+  experiences: "/api/experiences",
+} as const;
+
+/** Blog endpoints */
+export const blogRoutes = {
+  blogs: "/api/blogs",
+  blog: "/api/blogs/:slug",
+} as const;
+
+/** Projects summary (stats) */
+export const projectRoutes = {
+  summary: "/api/projects/summary",
+} as const;
+
 /** All API routes grouped together */
 export const apiRoutes = {
   profile: profileRoutes,
   aboutMe: aboutMeRoutes,
   banner: bannerRoutes,
   skill: skillRoutes,
+  exploreJourney: exploreJourneyRoutes,
+  experience: experienceRoutes,
+  blog: blogRoutes,
+  project: projectRoutes,
+  portfolio: {
+    portfolios: "/api/portfolios",
+    portfolio: "/api/portfolios/:slug",
+  },
 } as const;
 
 export default apiRoutes;

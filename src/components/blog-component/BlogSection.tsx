@@ -2,39 +2,46 @@ import { useRef, useState, useEffect } from 'react';
 import block1 from '../../assets/images/block-1.jpeg';
 import block2 from '../../assets/images/block-2.jpeg';
 import block3 from '../../assets/images/block-3.avif';
+import { getBlogs, type BlogDisplay } from '../../services/blog/blog.service';
 
-interface BlogPost {
-  id: number;
-  image: string;
-  category: string;
-  readTime: string;
-  title: string;
-  href: string;
-}
-
-const BLOG_POSTS: BlogPost[] = [
+const FALLBACK_POSTS: BlogDisplay[] = [
   {
     id: 1,
+    title: 'Conducting in-depth research and usability testing',
+    slug: '',
+    excerpt: 'Conducting in-depth research and usability testing',
+    content: '',
     image: block1,
     category: 'MARKETING',
-    readTime: '5 min read',
-    title: 'Conducting in-depth research and usability testing',
+    tags: [],
+    readingTime: '5 min read',
+    publishedAt: '',
     href: '#blog',
   },
   {
     id: 2,
+    title: 'Designing cohesive strategies and visual identities',
+    slug: '',
+    excerpt: 'Designing cohesive strategies and visual identities',
+    content: '',
     image: block2,
     category: 'DESIGN',
-    readTime: '5 min read',
-    title: 'Designing cohesive strategies and visual identities',
+    tags: [],
+    readingTime: '5 min read',
+    publishedAt: '',
     href: '#blog',
   },
   {
     id: 3,
+    title: 'Providing expert advice and strategic guidance',
+    slug: '',
+    excerpt: 'Providing expert advice and strategic guidance',
+    content: '',
     image: block3,
     category: 'STRATEGY',
-    readTime: '5 min read',
-    title: 'Providing expert advice and strategic guidance',
+    tags: [],
+    readingTime: '5 min read',
+    publishedAt: '',
     href: '#blog',
   },
 ];
@@ -42,6 +49,7 @@ const BLOG_POSTS: BlogPost[] = [
 export default function BlogSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
+  const [posts, setPosts] = useState<BlogDisplay[]>([]);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -54,6 +62,17 @@ export default function BlogSection() {
     );
     observer.observe(el);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    getBlogs()
+      .then((data) => {
+        console.log("getBlogs response:", data);
+        if (Array.isArray(data) && data.length > 0) setPosts(data);
+      })
+      .catch((err) => {
+        console.error("getBlogs error:", err);
+      });
   }, []);
 
   return (
@@ -80,21 +99,20 @@ export default function BlogSection() {
             id="blog-heading"
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary tracking-tight font-sans"
           >
-            Design Insights & Trends
+            Software Insights & Trends
           </h2>
         </header>
 
         {/* Blog cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-          {BLOG_POSTS.map((post) => (
-            <a
-              key={post.id}
-              href={post.href}
-              className="group block rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-[0_4px_24px_rgba(34,34,34,0.06)] hover:shadow-[0_8px_32px_rgba(34,34,34,0.08)] transition-shadow"
+          {(posts.length > 0 ? posts : FALLBACK_POSTS).map((post, idx) => (
+            <div
+              key={post.id ?? idx}
+              className="group block rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-[0_4px_24px_rgba(34,34,34,0.06)] transition-shadow"
             >
               <div className="relative aspect-[4/3] bg-gray-100">
                 <img
-                  src={post.image}
+                  src={post.image || (idx === 0 ? block1 : idx === 1 ? block2 : block3)}
                   alt=""
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
@@ -102,15 +120,16 @@ export default function BlogSection() {
               <div className="p-5 md:p-6">
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                   <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary text-white text-xs font-medium uppercase tracking-wide">
-                    {post.category}
+                    {String(post.category ?? '').toUpperCase()}
                   </span>
-                  <span className="text-sm font-normal text-primary/70">{post.readTime}</span>
+                  <span className="text-sm font-normal text-primary/70">{post.readingTime}</span>
                 </div>
                 <h3 className="text-base md:text-lg font-bold text-primary leading-snug font-sans">
                   {post.title}
                 </h3>
+                {post.excerpt && <p className="mt-3 text-sm text-primary/70">{post.excerpt}</p>}
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>

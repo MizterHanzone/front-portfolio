@@ -20,7 +20,8 @@ export default function CTA() {
   return (
     <section
       ref={sectionRef}
-      className="bg-tertiary py-16 md:py-20 px-6 md:px-8 text-center"
+      id="contact"
+      className="bg-tertiary py-16 md:py-20 px-6 md:px-8 text-center scroll-mt-20"
       aria-labelledby="cta-heading"
     >
       <div
@@ -42,10 +43,12 @@ export default function CTA() {
           from scratch or refining an existing idea.
         </p>
         <a
-          href="#contact"
+          href="https://t.me/sokhankheav"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 decoration-2 hover:text-secondary transition-colors font-sans"
         >
-          Book A Call
+          Contact
           <svg
             width="18"
             height="18"

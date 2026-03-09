@@ -7,6 +7,8 @@ import curveArrow from '../../assets/icons/curve-right-arrow.png';
 import { getAboutMe } from '../../services/about-me/about-me.service';
 import { getBanner } from '../../services/banner/banner.service';
 import { getSkills, type Skill } from '../../services/skill/skill.service';
+import { getExploreJourneys } from '../../services/explore-journey/explore-journey.service';
+import { getExperiences, type ExperienceDisplay } from '../../services/experience/experience.service';
 import slideDownload from '../../assets/images/slide-about/download.jpeg';
 import slideGoldenCream from '../../assets/images/slide-about/golden-cream-yy-f1e0bc.webp';
 import slideNN9036 from '../../assets/images/slide-about/NN-9036.webp';
@@ -30,58 +32,6 @@ const experiencesIntro =
 
 const experienceThumbnails = [slideDownload, slideGoldenCream, slideNN9036];
 
-interface Experience {
-  company: string;
-  location: string;
-  dates: string;
-  role: string;
-  description: string;
-  tags: string[];
-  highlighted: boolean;
-  expandDescription: string;
-  thumbnails: string[];
-  href: string;
-}
-
-const experiences: Experience[] = [
-  {
-    company: 'Creative Minds',
-    location: 'New York, USA',
-    dates: 'February 2022 - Present',
-    role: 'Senior Product Designer',
-    description: 'Innovated designs',
-    tags: ['UI/UX', 'Branding'],
-    highlighted: false,
-    expandDescription: 'From crafting seamless user experiences to leading strategic product design initiatives, each experience has shaped my approach and strengthened my passion for solving design challenges.',
-    thumbnails: experienceThumbnails,
-    href: '#portfolio',
-  },
-  {
-    company: 'FutureTech',
-    location: 'Berlin, Germany',
-    dates: 'February 2022 - Present',
-    role: 'Product Designer',
-    description: 'Led design initiatives',
-    tags: ['Branding', 'UI/UX'],
-    highlighted: true,
-    expandDescription: 'From crafting seamless user experiences to leading strategic product design initiatives, each experience has shaped my approach and strengthened my passion for solving design challenges.',
-    thumbnails: experienceThumbnails,
-    href: '#portfolio',
-  },
-  {
-    company: 'Visionary Creations',
-    location: 'London, UK',
-    dates: 'March 2019 - May 2020',
-    role: 'UX Designer',
-    description: 'Crafted user experiences',
-    tags: ['UX', 'Prototyping'],
-    highlighted: true,
-    expandDescription: 'From crafting seamless user experiences to leading strategic product design initiatives, each experience has shaped my approach and strengthened my passion for solving design challenges.',
-    thumbnails: experienceThumbnails,
-    href: '#portfolio',
-  },
-];
-
 export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
@@ -102,6 +52,8 @@ export default function AboutSection() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [exploreJourney, setExploreJourney] = useState<{ title: string; description: string } | null>(null);
+  const [experiences, setExperiences] = useState<ExperienceDisplay[]>([]);
 
   useEffect(() => {
     getAboutMe().then((data) => {
@@ -126,6 +78,10 @@ export default function AboutSection() {
       }
     });
     getSkills().then(setSkills);
+    getExploreJourneys().then((data) => {
+      if (data) setExploreJourney({ title: data.title, description: data.description });
+    });
+    getExperiences().then(setExperiences);
   }, []);
 
   const stat = {
@@ -449,7 +405,7 @@ export default function AboutSection() {
         }}
       >
         <div className="max-w-[1280px] mx-auto">
-          {/* Header: left = label + title, right = intro + Book A Call */}
+          {/* Header: left = label + title, right = intro + Contact */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-12 md:mb-16">
             <div className="lg:col-span-5">
               <div className="flex items-center gap-2 mb-2">
@@ -457,18 +413,20 @@ export default function AboutSection() {
                 <span className="text-sm font-normal text-primary/60 tracking-wide">Experiences</span>
               </div>
               <h3 className="text-3xl md:text-4xl font-bold text-primary tracking-tight">
-                Explore My Design Journey
+                {exploreJourney?.title ?? 'Explore My Design Journey'}
               </h3>
             </div>
             <div className="lg:col-span-7 flex flex-col justify-center">
               <p className="text-base md:text-lg font-normal text-primary/80 leading-relaxed mb-6">
-                {experiencesIntro}
+                {exploreJourney?.description ?? experiencesIntro}
               </p>
               <a
-                href="#contact"
+                href="https://t.me/sokhankheav"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 hover:text-secondary transition-colors w-fit"
               >
-                Book A Call
+                Contact
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M7 17L17 7M17 7h-10M17 7v10" />
                 </svg>
@@ -478,79 +436,83 @@ export default function AboutSection() {
 
           {/* Experience list with dividers – collapsible */}
           <ul className="border-t border-gray-200">
-            {experiences.map((exp, i) => {
-              const isExpanded = expandedIndex === i;
-              return (
-                <li key={i} className="border-b border-gray-200">
-                  <button
-                    type="button"
-                    onClick={() => setExpandedIndex(isExpanded ? null : i)}
-                    className="w-full py-6 md:py-8 text-left flex flex-col md:flex-row md:items-center gap-4 md:gap-6 hover:opacity-90 transition-opacity cursor-pointer"
-                    aria-expanded={isExpanded}
-                  >
-                    <div className="md:min-w-[200px] shrink-0">
-                      <p className="text-lg md:text-xl font-bold text-primary">
-                        {exp.company}, {exp.location}
+            {experiences.length > 0 ? (
+              experiences.map((exp, i) => {
+                const isExpanded = expandedIndex === i;
+                const thumbnails = exp.thumbnails.length > 0 ? exp.thumbnails : experienceThumbnails;
+                return (
+                  <li key={exp.id} className="border-b border-gray-200">
+                    <button
+                      type="button"
+                      onClick={() => setExpandedIndex(isExpanded ? null : i)}
+                      className="w-full py-6 md:py-8 text-left flex flex-col md:flex-row md:items-center gap-4 md:gap-6 hover:opacity-90 transition-opacity cursor-pointer"
+                      aria-expanded={isExpanded}
+                    >
+                      <div className="md:min-w-[200px] shrink-0">
+                        <p className="text-lg md:text-xl font-bold text-primary">
+                          {exp.company}, {exp.location}
+                        </p>
+                        <p className="text-sm font-normal text-primary/60 mt-0.5">{exp.dates}</p>
+                      </div>
+                      <p className="text-sm md:text-base font-normal text-primary/70 text-center flex-1 order-3 md:order-2">
+                        {exp.role}
                       </p>
-                      <p className="text-sm font-normal text-primary/60 mt-0.5">{exp.dates}</p>
-                    </div>
-                    <p className="text-sm md:text-base font-normal text-primary/70 text-center flex-1 order-3 md:order-2">
-                      {exp.description}, {exp.role}
-                    </p>
-                    <div className="flex flex-wrap gap-2 justify-end md:justify-end md:min-w-[140px] shrink-0 order-2 md:order-3 items-center">
-                      {exp.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                            tag === 'UI/UX' || tag === 'Research' || tag === 'UIUX'
-                              ? 'bg-primary text-white'
-                              : exp.highlighted
+                      <div className="flex flex-wrap gap-2 justify-end md:justify-end md:min-w-[140px] shrink-0 order-2 md:order-3 items-center">
+                        {exp.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                              exp.tags.indexOf(tag) === 0 || exp.highlighted
                                 ? 'bg-primary text-white'
                                 : 'bg-gray-100 text-primary/80'
-                          }`}
+                            }`}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        <span
+                          className={`ml-2 flex items-center justify-center w-8 h-8 rounded-full border border-primary/20 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                          aria-hidden
                         >
-                          {tag}
-                        </span>
-                      ))}
-                      <span
-                        className={`ml-2 flex items-center justify-center w-8 h-8 rounded-full border border-primary/20 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                        aria-hidden
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M6 9l6 6 6-6" />
-                        </svg>
-                      </span>
-                    </div>
-                  </button>
-                  {/* Expanded content: thumbnails + description + arrow button */}
-                  {isExpanded && (
-                    <div className="pb-6 md:pb-8 pt-0 border-t border-gray-100">
-                      <div className="flex flex-col md:flex-row gap-6 md:gap-8 md:items-start">
-                        <div className="flex gap-3 shrink-0">
-                          {(exp.thumbnails || experienceThumbnails).slice(0, 3).map((img, j) => (
-                            <div key={j} className="w-24 h-24 md:w-28 md:h-28 rounded-xl overflow-hidden bg-gray-100 shrink-0">
-                              <img src={img} alt="" className="w-full h-full object-cover" />
-                            </div>
-                          ))}
-                        </div>
-                        <p className="text-sm md:text-base font-normal text-primary/70 leading-relaxed flex-1">
-                          {exp.expandDescription}
-                        </p>
-                        <a
-                          href={exp.href || '#portfolio'}
-                          className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary text-white shrink-0 hover:scale-105 transition-transform"
-                          aria-label="View more"
-                        >
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M7 17L17 7M17 7h-10M17 7v10" />
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M6 9l6 6 6-6" />
                           </svg>
-                        </a>
+                        </span>
                       </div>
-                    </div>
-                  )}
-                </li>
-              );
-            })}
+                    </button>
+                    {/* Expanded content: thumbnails grid + description */}
+                    {isExpanded && (
+                      <div className="pb-6 md:pb-8 pt-6 md:pt-8 border-t border-gray-100">
+                        <div className="flex flex-col md:flex-row gap-8 md:gap-10 md:items-start">
+                          <div className="grid grid-cols-4 gap-3 shrink-0">
+                            {thumbnails.map((img, j) => (
+                              <button
+                                key={j}
+                                type="button"
+                                onClick={() => setPreviewImage(img)}
+                                className="w-24 h-24 md:w-28 md:h-28 rounded-xl overflow-hidden bg-gray-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30"
+                              >
+                                <img src={img} alt="" className="w-full h-full object-cover" />
+                              </button>
+                            ))}
+                          </div>
+                          <div className="text-sm md:text-base font-normal text-primary/70 leading-relaxed flex-1 space-y-4">
+                            {String(exp.description)
+                              .split(/\n{2,}|\r\n/)
+                              .filter(Boolean)
+                              .map((para, idx) => (
+                                <p key={idx}>{para}</p>
+                              ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </li>
+                );
+              })
+            ) : (
+              <li className="py-12 text-center text-primary/60 text-sm font-sans">No experiences to display yet.</li>
+            )}
           </ul>
 
           {/* About banner: fetched image with overlay text and CTA (under collapsible section) */}
@@ -576,7 +538,9 @@ export default function AboutSection() {
                   {bannerDescription}
                 </p>
                 <a
-                  href="#contact"
+                  href="https://t.me/sokhankheav"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/40 bg-primary/40 text-white text-sm font-medium hover:bg-white/10 hover:border-white/60 transition-colors font-sans"
                 >
                   Let's talk
