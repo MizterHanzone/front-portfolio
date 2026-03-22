@@ -19,7 +19,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'robots.txt', 'src/assets/icons/fox.png'],
+      includeAssets: ['favicon.svg', 'robots.txt', 'src/assets/icons/icon-profile.png'],
       manifest: {
         name: 'Han Portfolio',
         short_name: 'Han',
@@ -30,12 +30,12 @@ export default defineConfig({
         start_url: '.',
         icons: [
           {
-            src: 'src/assets/icons/fox.png',
+            src: 'src/assets/icons/icon-profile.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: 'src/assets/icons/fox.png',
+            src: 'src/assets/icons/icon-profile.png',
             sizes: '512x512',
             type: 'image/png',
           },

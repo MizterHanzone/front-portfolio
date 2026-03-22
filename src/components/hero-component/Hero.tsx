@@ -58,7 +58,10 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen py-24 px-8 pb-16 flex flex-col max-w-[1280px] mx-auto">
+    <section
+      ref={sectionRef}
+      className="relative box-border h-[100dvh] min-h-0 max-h-[100dvh] overflow-hidden flex flex-col px-6 md:px-8 pt-16 md:pt-20 pb-3 md:pb-5 max-w-[1280px] mx-auto"
+    >
       {/* Vertical left: year, tall line, role (all vertical) */}
       <div className="absolute left-6 top-1/2 -translate-y-1/2 max-md:hidden flex flex-col items-center" aria-hidden>
         <div className="text-sm font-light text-secondary [writing-mode:vertical-rl] [letter-spacing:0.2em] -rotate-180">
@@ -73,15 +76,15 @@ export default function Hero() {
       </div>
 
       <div
-        className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-12 items-center section-fade-up"
+        className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-2 grid-rows-[auto_1fr] md:grid-rows-1 gap-6 md:gap-10 lg:gap-12 items-stretch section-fade-up"
         style={{
           opacity: inView ? 1 : 0,
           transform: inView ? 'translateY(0)' : 'translateY(36px)',
           transitionDelay: inView ? '0.1s' : '0ms',
         }}
       >
-        <div className="max-w-[32rem] max-md:max-w-none max-md:text-center md:pl-[100px]">
-          <div className="flex gap-12 mb-8 max-md:justify-center">
+        <div className="max-w-[32rem] max-md:max-w-none max-md:text-center md:pl-[100px] flex flex-col justify-center min-h-0 min-w-0">
+          <div className="flex gap-8 md:gap-12 mb-4 md:mb-8 max-md:justify-center shrink-0">
             {statsFromSummary(projectSummary).map(({ value, label }) => (
               <div key={label} className="flex flex-col gap-1">
                 <span className="text-2xl font-semibold text-primary tracking-tight">
@@ -93,32 +96,27 @@ export default function Hero() {
               </div>
             ))}
           </div>
-          <h1 className="m-0 mb-2 text-primary font-light leading-[0.95] tracking-tight text-[clamp(5rem,14vw,9.5rem)]">
+          <h1 className="m-0 mb-1 md:mb-2 text-primary font-light leading-[0.95] tracking-tight text-[clamp(3.25rem,12vw,9.5rem)]">
             Hello
           </h1>
-          <p className="m-0 text-lg font-light text-secondary">
+          <p className="m-0 text-base md:text-lg font-light text-secondary shrink-0">
             — I'm {profile ? `${profile.first_name} ${profile.last_name}` : defaultName}, {profile?.description || defaultRole}
           </p>
         </div>
 
-        <div className="relative aspect-[3/4] max-h-[min(75vh,32rem)] md:justify-self-end max-md:mx-auto max-md:max-h-[50vh] overflow-hidden bg-secondary">
+        <div className="relative min-h-0 h-full w-full max-w-[min(75vh,32rem)] md:max-w-none md:justify-self-end max-md:mx-auto overflow-hidden">
           <img
             key={profile?.photo || 'default'}
             src={profile?.photo || heroImage}
             alt={profile ? `${profile.first_name} ${profile.last_name}` : 'Portrait'}
-            className="w-full h-full object-cover grayscale"
-          />
-          {/* Gradient overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent via-60% to-tertiary"
-            aria-hidden
+            className="h-full w-full object-cover object-center"
           />
         </div>
       </div>
 
       <a
         href="#content"
-        className="inline-flex items-center gap-2 self-start mt-auto py-2 text-sm font-light text-secondary transition-colors hover:text-primary"
+        className="inline-flex items-center gap-2 self-start mt-auto shrink-0 py-1 md:py-2 text-sm font-light text-secondary transition-colors hover:text-primary"
       >
         <span>Scroll down</span>
         <svg

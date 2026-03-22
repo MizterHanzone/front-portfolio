@@ -199,7 +199,7 @@ export default function AboutSection() {
                 <img
                   src={statImageSrc}
                   alt=""
-                  className="max-w-full max-h-[280px] md:max-h-[300px] w-auto h-auto object-contain object-center grayscale rounded-xl block mx-auto"
+                  className="max-w-full max-h-[280px] md:max-h-[300px] w-auto h-auto object-contain object-center rounded-xl block mx-auto"
                 />
               </div>
             </div>
@@ -218,7 +218,7 @@ export default function AboutSection() {
               <img
                 src={portraitImageSrc}
                 alt=""
-                className="w-full h-full object-cover object-top grayscale"
+                className="w-full h-full object-cover object-top"
               />
             </div>
             <ul className="space-y-4">

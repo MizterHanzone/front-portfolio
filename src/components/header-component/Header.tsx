@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import foxLogo from '../../assets/icons/fox.png';
+import iconProfile from '../../assets/icons/icon-profile.png';
 import ContactButtons from '../contact-buttons/ContactButtons';
 
 const SCROLL_THRESHOLD = 12;
@@ -90,7 +90,7 @@ export default function Header() {
         <div className="max-w-[1280px] mx-auto px-4 py-1.5 md:px-8 md:py-4 flex items-center justify-between">
           <div className="flex items-center gap-4 md:gap-8">
             <a href="/" className="flex items-center shrink-0" aria-label="Home">
-              <img src={foxLogo} alt="Logo" className="h-5 w-auto md:h-8" />
+              <img src={iconProfile} alt="Logo" className="h-5 w-auto md:h-8" />
             </a>
             <nav
               className="hidden md:flex items-center gap-8"
