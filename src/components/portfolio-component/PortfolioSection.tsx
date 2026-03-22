@@ -21,6 +21,16 @@ interface PortfolioItem {
   featured: boolean;
 }
 
+/** Label for external project links based on destination. */
+function portfolioLinkLabel(url: string): string {
+  const u = url.toLowerCase();
+  if (u.includes('play.google.com/store')) return 'Play store';
+  if (u.includes('apps.apple.com') || u.includes('itunes.apple.com')) {
+    return 'App store';
+  }
+  return 'View site';
+}
+
 const PORTFOLIO_ITEMS: PortfolioItem[] = [
   { id: 1, image: slideDownload, category: 'Brand Identity', title: null, subtitle: null, href: '#', featured: false },
   { id: 2, image: slideGoldenCream, category: 'Webflow Development', title: 'Website', subtitle: 'halodigital.xyz', href: '#', featured: true },
@@ -264,7 +274,7 @@ export default function PortfolioSection() {
                       <div className="flex flex-wrap gap-2">
                         {selected.projectUrls.map((u, i) => (
                           <a
-                            key={i}
+                            key={`${u}-${i}`}
                             href={u}
                             target="_blank"
                             rel="noreferrer"
@@ -275,7 +285,7 @@ export default function PortfolioSection() {
                               <path d="M15 3h6v6" />
                               <path d="M10 14L21 3" />
                             </svg>
-                            {selected.projectUrls.length > 1 ? `Project ${i + 1}` : 'Visit site'}
+                            {portfolioLinkLabel(u)}
                           </a>
                         ))}
                         {selected.githubUrl && (

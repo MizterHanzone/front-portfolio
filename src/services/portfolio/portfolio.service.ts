@@ -93,7 +93,9 @@ function normalizePortfolio(raw: Record<string, unknown>): PortfolioDisplay {
       }
     }
   }
-  const combinedProjectUrls = Array.from(new Set([...projectUrls, ...metaUrls]));
+  // Dedupe only URLs from portfolio fields; keep every `meta` entry so duplicate URLs
+  // in `meta` still render as separate links when the API lists them twice.
+  const combinedProjectUrls = [...Array.from(new Set(projectUrls)), ...metaUrls];
 
   // Final description (handle possible project description merge above)
   let finalDescription = description;
