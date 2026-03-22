@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import heroImage from '../../assets/images/about-1.jpeg';
-import { getProfile, type Profile } from '../../services/profile/profile.service';
+import { getProfileCached, type Profile } from '../../services/profile/profile.service';
 import { getProjectSummary, type ProjectSummary } from '../../services/portfolio/portfolio.service';
 
 const defaultStats = [
@@ -46,7 +46,7 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    getProfile()
+    getProfileCached()
       .then((data) => setProfile(data))
       .catch(() => setProfile(null));
   }, []);

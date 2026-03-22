@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import foxLogo from '../../assets/icons/fox.png';
+import ContactButtons from '../contact-buttons/ContactButtons';
 
 const SCROLL_THRESHOLD = 12;
 
@@ -106,28 +107,7 @@ export default function Header() {
               ))}
             </nav>
           </div>
-          <a
-            href="https://t.me/sokhankheav"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 py-1 px-3 md:py-2 md:px-4 text-[0.8125rem] md:text-[0.9375rem] font-medium text-white bg-primary rounded-full shadow-sm transition-transform hover:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-primary/30"
-          >
-            <span>Contact</span>
-            <svg
-              className="shrink-0"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden
-            >
-              <path d="M7 17L17 7M17 7h-10M17 7v10" />
-            </svg>
-          </a>
+          <ContactButtons />
         </div>
       </header>
 
@@ -137,7 +117,7 @@ export default function Header() {
         style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         <div className="grid grid-cols-3 w-full h-12 items-center px-1 gap-0">
-          {navLinks.map(({ id, label, href }) => (
+          {navLinks.map(({ label, href }) => (
             <a
               key={href}
               href={href}

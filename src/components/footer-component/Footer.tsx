@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getProfile } from '../../services/profile/profile.service';
+import { getProfileCached } from '../../services/profile/profile.service';
 
 const footerNavLinks = [
   { label: 'Home', href: '#', active: true },
@@ -15,7 +15,7 @@ export default function Footer() {
   const [email, setEmail] = useState(defaultEmail);
 
   useEffect(() => {
-    getProfile()
+    getProfileCached()
       .then((profile) => {
         if (profile?.email) setEmail(profile.email);
       })

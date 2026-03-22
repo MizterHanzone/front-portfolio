@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import ContactButtons from '../contact-buttons/ContactButtons';
 
 export default function CTA() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -42,27 +43,7 @@ export default function CTA() {
           I'm always excited to collaborate on new and innovative projects. Whether you're starting
           from scratch or refining an existing idea.
         </p>
-        <a
-          href="https://t.me/sokhankheav"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 decoration-2 hover:text-secondary transition-colors font-sans"
-        >
-          Contact
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden
-          >
-            <path d="M7 17L17 7M17 7h-10M17 7v10" />
-          </svg>
-        </a>
+        <ContactButtons className="justify-center" />
       </div>
     </section>
   );

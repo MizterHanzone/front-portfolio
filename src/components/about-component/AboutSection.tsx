@@ -420,7 +420,7 @@ export default function AboutSection() {
               <p className="text-base md:text-lg font-normal text-primary/80 leading-relaxed mb-6">
                 {exploreJourney?.description ?? experiencesIntro}
               </p>
-              <a
+              {/* <a
                 href="https://t.me/sokhankheav"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -430,7 +430,7 @@ export default function AboutSection() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M7 17L17 7M17 7h-10M17 7v10" />
                 </svg>
-              </a>
+              </a> */}
             </div>
           </div>
 
